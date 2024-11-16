@@ -74,7 +74,7 @@ python urgent2025_challenge/evaluation_metrics/calculate_speaker_similarity.py \
     --output_dir ${output_dir}/scoring_speaker_similarity \
     --device cuda
 
-# downstream-task-dependent metric (WER or 1-WAcc)
+# downstream-task-dependent metric (CER)
 python urgent2025_challenge/evaluation_metrics/calculate_wer.py \
     --meta_tsv dump/raw/${split}/text \
     --inf_scp ${inf_scp} \
