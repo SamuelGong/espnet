@@ -1,5 +1,4 @@
 # Recipe for the Interspeech 2025 URGENT challenge
-Official data preparation scripts for the [URGENT 2025 Challenge](https://urgent-challenge.github.io/urgent2025/)
 
 ## Install ESPnet from source
 For more details on installing ESPnet, please refer to https://espnet.github.io/espnet/installation.html.
@@ -23,7 +22,9 @@ make TH_VERSION=2.3.1 CUDA_VERSION=12.1
 
 0. Data preparation
     
-    Please do data preparation with [https://github.com/urgent-challenge/urgent2025_challenge](https://github.com/urgent-challenge/urgent2025_challenge). 
+    Please do data preparation with [https://github.com/urgent-challenge/urgent2025_challenge](https://github.com/urgent-challenge/urgent2025_challenge).
+    Data preparation has another packege dependencies and we recommend to make another python environment.
+    In default, python environment for ESPnet is `espnet_urgent2025` while that for data preparation is `urgent2025`.
 
 1. Move to the recipe directory:
     ```sh
