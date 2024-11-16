@@ -1,22 +1,28 @@
+# NOTE: this config is for fine-tuning the pre-traine TF-GridNet
+# which can be downloaded here
+# https://huggingface.co/wyz/tfgridnet_for_urgent24/tree/main/exp/enh_train_enh_tfgridnet_raw
+
 use_amp: false
 optim: adam
 init: none
 unused_parameters: false
-max_epoch: 100
+max_epoch: 30
 batch_type: folded
 batch_size: 2 # batch_size 2 can be trained on 2 A5000 GPU
+valid_batch_size: 4
 iterator_type: chunk
-chunk_length: 150 # 3s # 200 # 4s
+chunk_length: 200 # 4s
 chunk_default_fs: 50 # GCD among all possible sampling frequencies
 num_cache_chunks: 128
-num_iters_per_epoch: 8000
+chunk_max_abs_length: 144000 # max number of samples per chunk for all sampling frequencies. 3[s] for 48kHz audio (reduce this value if OOM occurs)
+num_iters_per_epoch: 4000
 num_workers: 4
 grad_clip: 1.0
 optim_conf:
-    lr: 2.5e-04
+    lr: 1.0e-04
     eps: 1.0e-08
     weight_decay: 1.0e-05
-patience: 40
+patience: 5
 val_scheduler_criterion:
 - valid
 - loss
@@ -24,11 +30,11 @@ best_model_criterion:
 -   - valid
     - loss
     - min
-keep_nbest_models: 1
+keep_nbest_models: 5
 scheduler: warmupsteplr
 scheduler_conf:
-    step_size: 2
-    gamma: 0.99
+    step_size: 1
+    gamma: 0.98
     warmup_steps: 4000
 
 allow_multi_rates: true
@@ -36,9 +42,9 @@ allow_multi_rates: true
 preprocessor: enh
 preprocessor_conf:
     speech_volume_normalize: "0.5_1.0"
-    rir_scp: data/rir_train.scp
+    rir_scp: dump/raw/rir_train.scp
     rir_apply_prob: 0.5
-    noise_scp: data/noise_train.scp
+    noise_scp: dump/raw/noise_train.scp
     noise_apply_prob: 1.0
     noise_db_range: "-5_15"
     force_single_channel: true
@@ -122,8 +128,3 @@ criterions:
     wrapper: fixed_order
     wrapper_conf:
       weight: 0.0
-
-use_wandb: true
-wandb_project: urgent2025
-wandb_entity: kohei0209
-wandb_name: tfgridnet_finetune_from21epoch
