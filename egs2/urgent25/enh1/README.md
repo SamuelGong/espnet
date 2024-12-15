@@ -97,3 +97,25 @@ make TH_VERSION=2.3.1 CUDA_VERSION=12.1
     ```
 
     Scores are saved in `<path-to-exp-directory>/{scoring*}` directories.
+
+
+## Pre-trained model
+
+We provide pre-trained weights of the baseline model, TF-GridNet, at Huggingface ([kohei0209/tfgridnet_urgent25](https://huggingface.co/kohei0209/tfgridnet_urgent25)).
+
+You can either manually download from the [repo](https://huggingface.co/kohei0209/tfgridnet_urgent25) or using the python script as follows:
+
+```sh
+import soundfile as sf
+from espnet2.bin.enh_inference import SeparateSpeech
+# For model downloading + loading
+model = SeparateSpeech.from_pretrained(
+    model_tag="kohei0209/tfgridnet_urgent25",
+    normalize_output_wav=True,
+    device="cuda",
+)
+audio, fs = sf.read("/path/to/noisy/utt1.flac")
+enhanced = model(audio[None, :], fs=fs)[0]
+```
+
+You can also find the baseline model of the NeurIPS 2024 URGENT challenge [here](https://huggingface.co/wyz/tfgridnet_for_urgent24/tree/main/exp/enh_train_enh_tfgridnet_raw), which we used to initialize the baseline model of this Interspeech 2025 URGENT challenge.
